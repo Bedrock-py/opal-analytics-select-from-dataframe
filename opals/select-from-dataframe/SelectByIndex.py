@@ -1,35 +1,24 @@
-#****************************************************************
-# Copyright (c) 2015, Georgia Tech Research Institute
-# All rights reserved.
-#
-# This unpublished material is the property of the Georgia Tech
-# Research Institute and is protected under copyright law.
-# The methods and techniques described herein are considered
-# trade secrets and/or confidential. Reproduction or distribution,
-# in whole or in part, is forbidden except by the express written
-# permission of the Georgia Tech Research Institute.
-#****************************************************************/
-
+from bedrock.analytics.utils import Algorithm
 from bedrock.dataloader.utils import *
 import numpy as np
 import pandas as pd
 
-# REFERENCE SYNTAX:  # data.iloc[[0, 4, 7, 25], [0, 5, 6]]  # 1st, 4th, 7th, 25th row + 1st 6th 7th columns.
-#class SelectByIndex(Filter):
+
+# If an invalid operator or index is selected, the original dataframe will be returned unmodified.
 class SelectByIndex(Algorithm):
     def __init__(self):
         super(SelectByIndex, self).__init__()
         self.inputs = ['matrix.csv']
         self.outputs = ['matrix.csv']
         self.name = 'SelectByIndex'
-        self.type = 'Filter' # what goes here?
+        self.type = 'select'
         self.description = 'Select rows or columns from a dataframe based on a vector of indices to keep or drop.'
         self.parameters_spec = [{ "indices": "Vector of integers", "Axis": "0 for row-wise; 1 for column-wise", "drop": "boolean; T= drop indices; F= keep indices"}]
-        self.possible_names = [] # what goes here?
+        self.possible_names = []
 
 
-    # Writes the resulting subset dataframe to csv (?)
-    def compute(self, inputs, indices, axis, drop, **kwargs):
+    # Writes the resulting subset dataframe to csv
+    def compute(self, inputs, indices, axis, drop=False, **kwargs):
 
         indata = pd.DataFrame(np.genfromtxt(inputs['matrix.csv']['rootdir'] + 'matrix.csv', delimiter=','))
 

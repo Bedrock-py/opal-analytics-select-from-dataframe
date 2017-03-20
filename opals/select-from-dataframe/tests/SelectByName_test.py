@@ -1,9 +1,9 @@
+import os
 import unittest
 
 import numpy as np
 import pandas as pd
 from opals.select.SelectByName import *
-import os
 
 
 class SelByNameTest(unittest.TestCase):
