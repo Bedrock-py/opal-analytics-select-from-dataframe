@@ -1,0 +1,12 @@
+{ "opal-analytics-select-from-dataframe":
+        {
+            "description": "Select a subset of data from a dataframe by passing an array of column or row indices to include",
+            "units": "SelectByIndex.py, SelectByName.py, SelectByCondition.py",
+            "supports": "",
+            "python_dependencies": "pandas, numpy, unittest2, bedrock",
+            "system_dependencies": "",
+            "api": "analytics",
+            "interface": "analytics",
+            "installation_script": ""
+        }
+}

@@ -18,9 +18,9 @@ def opalRegistration():
     from bedrock.core.opals import manage_opals
     algs = ['SelectByIndex','SelectByIndex', 'SelectByCondition']
     for alg in algs:
-        success = manage_opals("add","filters","opals.select.{0}.{0}".format(alg))
+        success = manage_opals("add","analytics","opals.select.{0}.{0}".format(alg))
         if (success == False):
-            success = manage_opals("reload","filters","opals.select.{0}.{0}".format(alg))
+            success = manage_opals("reload","analytics","opals.select.{0}.{0}".format(alg))
             if (success == False):
                 raise
 
@@ -94,7 +94,7 @@ setup(
     # requirements files see:
     # https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'bedrock', 'pandas', 'numpy', 'unittest'
+        'bedrock', 'pandas', 'numpy', 'unittest2'
         ],
 
     # List additional groups of dependencies here (e.g. development
