@@ -18,9 +18,9 @@ def opalRegistration():
     from bedrock.core.opals import manage_opals
     algs = ['SelectByIndex','SelectByIndex', 'SelectByCondition']
     for alg in algs:
-        success = manage_opals("add","analytics","opals.select.{0}.{0}".format(alg))
+        success = manage_opals("add","analytics","opals.select-from-dataframe.{0}.{0}".format(alg))
         if (success == False):
-            success = manage_opals("reload","analytics","opals.select.{0}.{0}".format(alg))
+            success = manage_opals("reload","analytics","opals.select-from-dataframe.{0}.{0}".format(alg))
             if (success == False):
                 raise
 
