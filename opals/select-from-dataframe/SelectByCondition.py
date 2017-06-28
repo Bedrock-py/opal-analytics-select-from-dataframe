@@ -15,7 +15,7 @@ class SelectByCondition(Algorithm): # comment out to run unit test
         self.name ='SelectByCondition'
         self.type = 'select'
         self.description = 'Select rows from a dataframe based on the values of a particular column relative to a comparator.'
-        self.parameters_spec = [{ "colname": "String", "Comparator": "String in {<, <=, >, >=, ==, !=}", "value": "Float"}]
+        self.parameters_spec = [{ "colname": "String", "comparator": "String in {<, <=, >, >=, ==, !=}", "value": "Float"}]
         self.possible_names = []
         self.comparators = ["<", "<=", ">", ">=", "==", "!="]
         self.ops = {"<": (lambda x, y: x < y),
@@ -29,6 +29,8 @@ class SelectByCondition(Algorithm): # comment out to run unit test
     def compute(self, inputs, colname, comparator, value, **kwargs):
 
         indata = pd.DataFrame(np.genfromtxt(inputs['matrix.csv']['rootdir'] + 'matrix.csv', delimiter=',')) #comment out to run unit test
+
+        value = float(value)
 
         #indata = inputs #uncomment to run unit test
 
