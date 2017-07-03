@@ -13,7 +13,12 @@ class SelectByIndex(Algorithm):
         self.name = 'SelectByIndex'
         self.type = 'select'
         self.description = 'Select rows or columns from a dataframe based on a vector of indices to keep or drop.'
-        self.parameters_spec = [{ "indices": "Vector of integers", "Axis": "0 for row-wise; 1 for column-wise", "drop": "boolean; T= drop indices; F= keep indices"}]
+        self.parameters_spec = [
+            {"name": "Indices (a vector of integers)" , "attrname": "indices", "value": "" , "type": "input" , "step": None , "max": None, "min": None },
+            {"name": "Axis (0 for row-wise; 1 for column-wise)", "attrname": "axis", "value": 0, "type": "input", "step": 1, "max": 1, "min": 0},
+            {"name": "Drop (T = drop indices; F = keep indices)", "attrname": "drop", "value": True, "type": "input", "step": None, "max": 1, "min": 0}
+        ]
+        #self.parameters_spec = [{ "indices": "Vector of integers", "Axis": "0 for row-wise; 1 for column-wise", "drop": "boolean; T= drop indices; F= keep indices"}]
         self.possible_names = []
 
 

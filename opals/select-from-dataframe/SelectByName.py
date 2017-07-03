@@ -14,6 +14,10 @@ class SelectByName(Algorithm):
         self.type = 'select'
         self.description = 'Select columns from a dataframe based on a vector of names to keep or drop.'
         self.parameters_spec = [{ "colnames": "Vector of strings corresponding to column names", "drop": "boolean; T= drop indices; F= keep indices"}]
+        self.parameters_spec = [
+            {"name": "Column name" , "attrname": "colname", "value": "" , "type": "input" , "step": None , "max": None, "min": None },
+            {"name": "Drop (T = drop indices; F = keep indices)", "attrname": "drop", "value": False, "type": "input", "step": None, "max": 1, "min": 0}
+        ]
         self.possible_names = []
 
     # Writes the resulting subset dataframe to csv (?)
