@@ -20,24 +20,41 @@ class SelectByName(Algorithm):
         ]
         self.possible_names = []
 
-    # Writes the resulting subset dataframe to csv (?)
-    def compute(self, inputs, colnames, drop=False, **kwargs):
+    def __build_df__(self, filepath):
+        featuresPath = filepath['features.txt']['rootdir'] + 'features.txt'
+        matrixPath = filepath['matrix.csv']['rootdir'] + 'matrix.csv'
+        df = pd.read_csv(matrixPath, header=-1)
+        featuresList = pd.read_csv(featuresPath, header=-1)
 
-        indata = pd.DataFrame(np.genfromtxt(inputs['matrix.csv']['rootdir'] + 'matrix.csv', delimiter=','))
+        df.columns = featuresList.T.values[0]
+
+        return df
+
+    def __get_features__(self,filepath):
+        featuresPath = filepath['features.txt']['rootdir'] + 'features.txt'
+        featuresList = pd.read_csv(featuresPath, header=-1)
+
+        return featuresList.T.values
+
+    # Writes the resulting subset dataframe to csv (?)
+    def compute(self, inputs, **kwargs):
+        indata = self.__build_df__(inputs)
+        featuresList = self.__get_features__(inputs)
+        indata.columns = featuresList
 
         # Since we are using names and not indices, we can only filter column-wise
-        if drop == False:
+        if self.drop == False:
             try:
-                outdata = indata.iloc[:,colnames]
+                outdata = indata.iloc[:,self.colnames]
 
             except IndexError:
                 outdata = indata
 
-        elif drop == True:
+        elif self.drop == True:
             try:
-                outdata = indata.drop(indata.columns[colnames], inplace=False)
+                outdata = indata.drop(indata.columns[self.colnames], inplace=False)
 
             except IndexError:
                 outdata = indata
 
-        self.results = {'matrix.csv': outdata}
+        self.results = {'matrix.csv': outdata.values, 'features.txt': featuresList[0]}

@@ -2,6 +2,7 @@ from bedrock.analytics.utils import Algorithm
 from bedrock.dataloader.utils import *
 import numpy as np
 import pandas as pd
+import logging
 
 
 # If an invalid operator or index is selected, the original dataframe will be returned unmodified.
@@ -21,41 +22,57 @@ class SelectByIndex(Algorithm):
         #self.parameters_spec = [{ "indices": "Vector of integers", "Axis": "0 for row-wise; 1 for column-wise", "drop": "boolean; T= drop indices; F= keep indices"}]
         self.possible_names = []
 
+    def __build_df__(self, filepath):
+        featuresPath = filepath['features.txt']['rootdir'] + 'features.txt'
+        matrixPath = filepath['matrix.csv']['rootdir'] + 'matrix.csv'
+        df = pd.read_csv(matrixPath, header=-1)
+        featuresList = pd.read_csv(featuresPath, header=-1)
+
+        df.columns = featuresList.T.values[0]
+
+        return df
+
+    def __get_features__(self,filepath):
+        featuresPath = filepath['features.txt']['rootdir'] + 'features.txt'
+        featuresList = pd.read_csv(featuresPath, header=-1)
+
+        return featuresList.T.values
 
     # Writes the resulting subset dataframe to csv
-    def compute(self, inputs, indices, axis, drop=False, **kwargs):
-
-        indata = pd.DataFrame(np.genfromtxt(inputs['matrix.csv']['rootdir'] + 'matrix.csv', delimiter=','))
+    def compute(self, inputs, **kwargs):
+        indata = self.__build_df__(inputs)
+        featuresList = self.__get_features__(inputs)
+        indata.columns = featuresList
 
         # If axis = 1, we filter column-wise
-        if drop == False:
-            if axis == 1:
+        if self.drop == False:
+            if self.axis == 1:
                 try:
-                    outdata = indata.iloc[:,indices]
+                    outdata = indata.iloc[:,self.indices]
 
                 except IndexError:
-                    outdata = indata
+                    raise
 
         # Otherwise, we filter row-wise
             else:
-                outdata = indata.iloc[indices, :]
+                outdata = indata.iloc[self.indices, :]
 
-        elif drop == True:
+        elif self.drop == True:
             if axis == 1:
 
                 try:
-                    outdata = indata.drop(indata.columns[indices], axis=axis, inplace=False)
+                    outdata = indata.drop(indata.columns[self.indices], axis=axis, inplace=False)
 
                 except IndexError:
-                    outdata = indata
+                    raise
 
             else:
                 try:
-                    outdata = indata.drop(indata.index[indices], axis=axis, inplace=False)
+                    outdata = indata.drop(indata.index[self.indices], axis=axis, inplace=False)
 
                 except IndexError:
-                    outdata = indata
+                    raise
 
 
         # Save the results to csv
-        self.results = {'matrix.csv': outdata}
+        self.results = {'matrix.csv': outdata.values, 'features.txt': featuresList[0]}
