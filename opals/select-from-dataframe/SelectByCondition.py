@@ -54,8 +54,11 @@ class SelectByCondition(Algorithm): # comment out to run unit test
         try:
             self.value = float(self.value)
         except Exception:
-            logging.error("Could not convert value to float")
-            raise
+            if self.comparator == "==" or self.comparator == "!=":
+                pass
+            else:
+                logging.error("Could not convert value to float")
+                raise
 
         # Helper func to evaluate x vs. y comparison
         def eval_expr(x, value, comparator):
@@ -70,12 +73,9 @@ class SelectByCondition(Algorithm): # comment out to run unit test
             # Valid comparison
             try:
                 outdata = indata[indata[self.colname].apply(lambda x: eval_expr(x, self.value, self.comparator))]
-                print(outdata)
             except IndexError:
                 logging.error("Filtering on comparison failed")
                 raise
-
-        logging.error(featuresList[0])
 
         # Save the results to csv
         self.results = {'matrix.csv': outdata.values, 'features.txt': featuresList[0]}
