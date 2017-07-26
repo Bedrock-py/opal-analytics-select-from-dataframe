@@ -16,7 +16,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 def opalRegistration():
     from bedrock.core.opals import manage_opals
-    algs = ['SelectByIndex','SelectByIndex', 'SelectByCondition']
+    algs = ['SelectByIndex','SelectByIndex', 'SelectByCondition', 'SelectByComplexCondition']
     for alg in algs:
         success = manage_opals("add","analytics","opals.select-from-dataframe.{0}.{0}".format(alg))
         if (success == False):

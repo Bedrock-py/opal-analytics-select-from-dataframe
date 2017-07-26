@@ -22,13 +22,15 @@ class SelectByCondition(Algorithm): # comment out to run unit test
             {"name": "Value", "attrname": "value", "value": None, "type": "input", "step": 1, "max": float('inf'), "min": -float('inf')}
         ]
         self.possible_names = []
-        self.valid_comparators = ["<", "<=", ">", ">=", "==", "!="]
+        self.valid_comparators = ["<", "<=", ">", ">=", "==", "!=","isnull","notnull"]
         self.ops = {"<": (lambda x, y: x < y),
                     "<=": (lambda x, y: x <= y),
                     ">": (lambda x, y: x > y),
                     ">=":(lambda x, y: x >= y),
                     "==": (lambda x, y: x == y),
-                    "!=": (lambda x, y:	x != y)}
+                    "!=": (lambda x, y:	x != y),
+                    "isnull": (lambda x, y:	x is None or math.isnan(x) == True),
+                    "notnull": (lambda x, y: x is not None and math.isnan(x) == False)}
 
     def __build_df__(self, filepath):
         featuresPath = filepath['features.txt']['rootdir'] + 'features.txt'
@@ -54,7 +56,8 @@ class SelectByCondition(Algorithm): # comment out to run unit test
         try:
             self.value = float(self.value)
         except Exception:
-            if self.comparator == "==" or self.comparator == "!=":
+            if self.comparator == "==" or self.comparator == "!=" or \
+                self.comparator == "isnull" or self.comparator == "notnull":
                 pass
             else:
                 logging.error("Could not convert value to float")
