@@ -50,7 +50,7 @@ setup(
     long_description=long_description,
 
     # The project's main homepage.
-    url='https://github.gatech.edu/Bedrock/opal-dataloader-analytics-select-from-dataframe',
+    url='https://github.gatech.edu/Bedrock/opal-analytics-select-from-dataframe',
 
     # Author details
     author='Georgia Tech Research Institute',
